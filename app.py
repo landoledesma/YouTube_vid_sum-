@@ -10,21 +10,20 @@ def main():
     youtube = YoutubeSum()
 
     # Set the title and background color
-    st.title("YouTube Video Summarizer 🎥")
+    st.title("YouTube video Resumen 🎥")
     st.markdown('<style>h1{color: orange; text-align: center;}</style>', unsafe_allow_html=True)
-    st.subheader('Built with the Llama 2 🦙, Haystack, Streamlit and ❤️')
-    st.markdown('<style>h3{color: pink;  text-align: center;}</style>', unsafe_allow_html=True)
 
     # Expander for app details
-    with st.expander("About the App"):
-        st.write("This app allows you to summarize while watching a YouTube video.")
-        st.write("Enter a YouTube URL in the input box below and click 'Submit' to start. This app is built by AI Anytime.")
+    with st.expander("Acerca de la app"):
+        st.write("Crea resumen de videos de youtube con LLMs.")
+        st.write("Ingresa la url de un video abajo y da click en 'Cargar' para empezar.")
 
     # Input box for YouTube URL
     youtube_url = st.text_input("Enter YouTube URL")
 
     # Submit button
-    if st.button("Submit") and youtube_url:
+    if st.button("Cargar") and youtube_url:
+        file_path = youtube.download_video(youtube_url)
         start_time = time.time()  # Start the timer
         # Download video
         file_path = youtube.download_video(youtube_url)
