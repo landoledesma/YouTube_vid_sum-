@@ -23,15 +23,14 @@ def main():
 
     # Submit button
     if st.button("Cargar") and youtube_url:
-        file_path = youtube.download_video(youtube_url)
-        start_time = time.time()  # Start the timer
         # Download video
         file_path = youtube.download_video(youtube_url)
-
         # Initialize model
-        prompt_node = prompt_node = youtube.load_model()
+        model_node = youtube.load_model()
+
+        start_time = time.time()  # Start the timer
         # Transcribe audio
-        output = youtube.transcribe_aud(file_path, prompt_node)
+        output = youtube.transcribe_aud(file_path, model_node)
 
         end_time = time.time()  # End the timer
         elapsed_time = end_time - start_time
@@ -45,7 +44,7 @@ def main():
 
         # Column 2: Summary View
         with col2:
-            st.header("Summarization of YouTube Video")
+            st.header("Resumen del Video")
             st.write(output)
             st.success(output["results"][0].split("\n\n[INST]")[0])
             st.write(f"Time taken: {elapsed_time:.2f} seconds")
