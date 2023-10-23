@@ -30,9 +30,7 @@ def main():
         file_path = youtube.download_video(youtube_url)
 
         # Initialize model
-        full_path = "llama-2-7b-32k-instruct.Q4_K_S.gguf"
-        model = youtube.load_model_model(full_path)
-        prompt_node = prompt_node = youtube.init_prompt_nodeinit_prompt_node(model)
+        prompt_node = prompt_node = youtube.load_model()
         # Transcribe audio
         output = youtube.transcribe_aud(file_path, prompt_node)
 
