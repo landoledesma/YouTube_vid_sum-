@@ -2,28 +2,22 @@ from pytube import YouTube
 from haystack.nodes import  PromptNode
 from haystack.nodes.audio import WhisperTranscriber
 from haystack.pipelines import Pipeline
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
-load_dotenv("token.env")
+load_dotenv('token.env')
+
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 
 class YoutubeSumVid:
 
     def load_model(self):
-        summary_prompt = "deepset/summarization"
-        model_node = PromptNode(
-            "gpt-3.5-turbo",
-            api_key=OPENAI_API_KEY,
-            max_length=256,
-            stop_words=["Observation:"],
-            model_kwargs={"temperature": 0.5},
-            default_prompt_template=summary_prompt,
-            use_gpu=False
-        )
-        return model_node
+        prompt_node = PromptNode("text-davinci-003", max_length=1000,default_prompt_template="deepset/summarization",
+                         api_key=OPENAI_API_KEY,)
+        return prompt_node
 
-    def download_video(self,url):
+    def download_video(self,url:str):
         yt = YouTube(url)
         video = yt.streams.filter(abr='160kbps').last()
         return video.download()
@@ -34,5 +28,7 @@ class YoutubeSumVid:
         pipeline = Pipeline()
         pipeline.add_node(component=whisper, name="whisper",inputs=["File"])
         pipeline.add_node(component=prompt_node, name="promt",inputs=["whisper"])
+        
         output = pipeline.run(file_paths=[file_path])
-        return output
+       
+        return (output["results"])

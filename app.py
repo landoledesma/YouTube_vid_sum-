@@ -1,13 +1,14 @@
 import streamlit as st
 import time
 from logic import YoutubeSumVid
+import os
 
 st.set_page_config(
     layout="wide"
 )
-youtube = YoutubeSumVid()
+
 def main():
-    
+    youtube = YoutubeSumVid() 
 
     # Set the title and background color
     st.title("YouTube video Resumen 🎥")
@@ -26,6 +27,8 @@ def main():
         start_time = time.time()  # Start the timer
         # Download video
         file_path = youtube.download_video(youtube_url)
+        print("hola putos")
+        print(file_path)
         # Initialize model
         model_node = youtube.load_model()
 
@@ -46,8 +49,11 @@ def main():
         with col2:
             st.header("Resumen del Video")
             st.write(output)
-            st.success(output["results"][0].split("\n\n[INST]")[0])
+            result_text = output[0].split("\n\n[INST]")[0] 
+            st.success(result_text)
+            #st.success(output["results"][0].split("\n\n[INST]")[0])
             st.write(f"Tiempo estimado : {elapsed_time:.2f} segundos")
+   
 
 if __name__ == "__main__":
     main()
